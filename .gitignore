@@ -1,0 +1,11 @@
+target/
+.classpath
+.project
+.cache-main
+.cache-tests
+cp/py/script/.DS_Store
+.idea/
+*.iml
+project/build.properties
+metastore_db/
+derby.log
