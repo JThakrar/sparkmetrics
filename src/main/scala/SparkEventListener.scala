@@ -4,6 +4,16 @@ import java.time.Instant
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.scheduler._
 
+/**
+  * An implementation of SparkListener that captures the application,
+  * job or stage metric data and writes it to the destination specified in the writer.
+  * You can enable/disable writing of each kind of metric.
+  * @param spark
+  * @param writer
+  * @param writeOnStageComplete
+  * @param writeOnJobComplete
+  * @param writeOnApplicationComplete
+  */
 case class SparkEventListener(
                                spark: SparkSession,
                                writer: BaseMetricWriter,

@@ -5,7 +5,7 @@ import MetricType.Name
   * Metric that represents a single application run (spark batch).
   * A single application run consists of one or more jobs each of which has one or more stages.
   * Each job and stage is identified by a job or stage id.
-  * ISO8601 date+time format example, "2007-04-05T14:30Z" or "2007-04-05T12:30-02:00"
+  * ISO8601 date+time format example, "2019-02-05T14:30Z"
   *
   * @param appId
   * @param appName

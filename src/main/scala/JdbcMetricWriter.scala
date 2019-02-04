@@ -4,14 +4,32 @@ import java.sql.DriverManager
 import java.sql.PreparedStatement
 import java.sql.Timestamp
 
+/** Writes metrics to a JDBC destination. If the username is empty then no authentication is used.
+  * It is expected that appropriate stage, job and app metric tables have already been created in
+  * the destination datastore.
+  *
+  * See the minimal table definitions in .....
+  * The columns defined there are the minimum necessary.
+  * Note that any additional columns will need to be populated outside of this writer.
+  *
+  * The table names can be with or without explicit schema names,
+  * but need appropriate permissions for the specified user to insert rows.
+  * @param dbUrl
+  * @param userName
+  * @param password
+  * @param condition
+  * @param appMetricsTableName
+  * @param jobMetricsTableName
+  * @param stageMetricsTableName
+  */
 class JdbcMetricWriter(
                         dbUrl: String,
                         userName: String = "",
                         password: String = "",
                         condition: Function1[BaseMetric, Boolean] = (m: BaseMetric) => true,
-                        appMetricsTable: String = "APP_METRIC",
-                        jobMetricsTable: String = "JOB_METRIC",
-                        stageMetricsTable: String = "STAGE_METRIC"
+                        appMetricsTableName: String = "APP_METRIC",
+                        jobMetricsTableName: String = "JOB_METRIC",
+                        stageMetricsTableName: String = "STAGE_METRIC"
                       ) extends BaseMetricWriter {
 
   override def writeCondition(metric: BaseMetric) = condition(metric)
@@ -31,7 +49,7 @@ class JdbcMetricWriter(
       case s: StageMetric => executeStageMetricInsert(stageMetricPrepStmt, s)
     }
   }
-  
+
   def executeAppMetricInsert(stmt: PreparedStatement, appMetric: ApplicationMetric): Unit = {
     stmt.setString(1, appMetric.appId)
     stmt.setString(2, appMetric.appName)
@@ -104,7 +122,7 @@ class JdbcMetricWriter(
 
   private val insertAppMetricSql =
     s"""
-       |INSERT INTO ${appMetricsTable}
+       |INSERT INTO ${appMetricsTableName}
        |(
        | app_id,
        | app_name,
@@ -132,7 +150,7 @@ class JdbcMetricWriter(
 
   private val insertJobMetricSql =
     s"""
-       |INSERT INTO ${jobMetricsTable}
+       |INSERT INTO ${jobMetricsTableName}
        |(
        | app_id,
        | app_name,
@@ -164,7 +182,7 @@ class JdbcMetricWriter(
 
   private val insertStageMetricSql =
     s"""
-       |INSERT INTO ${stageMetricsTable}
+       |INSERT INTO ${stageMetricsTableName}
        |(
        | app_id,
        | app_name,

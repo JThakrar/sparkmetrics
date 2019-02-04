@@ -6,7 +6,7 @@ import org.json4s.jackson.Serialization.{read, write, writePretty}
 import org.json4s.Xml
 
 /**
-  * Base class for all metrics. It defines methods to convert metric to JSON.
+  * Base class for all metrics. It defines methods to convert metric to JSON string.
   * The methods make it easy to write metric writers (see @link BaseMetricWriter) that
   * write metrics to a data store (e.g. filesystem, RDBMS, Cassandra).
   */
@@ -38,7 +38,11 @@ abstract class BaseMetric {
 
   /**
     * A unique id for this metric.
-    * The id string format depends upon the metric type
+    * The id string format depends upon the metric type.
+    * = app_id for app metric
+    * = app_id_job_id for job metric
+    * = app_id_job_id_stage_id for stage metric
+    *
     * @return
     */
   def id: String
