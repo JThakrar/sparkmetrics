@@ -89,5 +89,6 @@ Additionally, having such metrics as baseline allows one to troubleshoot when th
 And having sufficient amount of historical data allows one to predict job completion time - which is an often asked question -
 since Spark jobs on YARN always show 10% completion.
 
+And ofcourse having the output row counts may alleviate the need to do an explicit row count for debugging purposes.
 
 
